@@ -1,0 +1,233 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOT</title>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+
+<style>
+    .wrapper {    
+	margin-top: 80px;
+	margin-bottom: 20px;
+}
+
+.form-signin {
+  max-width: 420px;
+  padding: 30px 38px 66px;
+  margin: 0 auto;
+  background-color: #eee;
+  border: 3px dotted rgba(0,0,0,0.1);  
+  }
+
+.form-signin-heading {
+  text-align:center;
+  margin-bottom: 30px;
+}
+
+.form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+}
+
+input[type="text"] {
+  margin-bottom: 0px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+input[type="password"] {
+  margin-bottom: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.colorgraph {
+  height: 7px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+</style>
+</head>
+<body>
+
+<div class = "container">
+	<div class="wrapper">
+ 
+		<form action="/update" method="post" name="Signup_Form" id="signup-form" class="form-signin">  
+        <span style="color: green; text-align: center;">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+          {% endif %}
+        {% endwith %}
+        </span>   
+		    <h3 class="form-signin-heading">Hello, {{ session.auth.username }}</h3>
+			  <hr class="colorgraph"><br>
+			  
+        <label for="">Personal Information</label>
+			  <input type="text" class="form-control" name="username" id="user"  value="{{ session.auth.username }}" disabled />
+        <input type="hidden" class="form-control" name="id" id="id"  value="{{ session.auth.id }}"  />
+        <input type="text" class="form-control" name="email" id="email"  value="{{ session.auth.email }}"  />
+        <input type="text" class="form-control" name="passphrase" id="passphrase"  placeholder="passphrase" value="{{ session.auth.webhook_passphrase }}" />
+
+        <br>
+        <label for="">Binance Information</label><button class="pull-right  btn btn-success" type="button" onclick="testBinance()"> Test </button><br>
+        <!-- <span>Binance api key</span> -->
+        <input type="text" class="form-control" name="binance_api_key" id="binance_api_key"  placeholder="binance_api_key" value="{{ session.auth.binance_api_key }}" />
+        <!-- <span>Binance api secret</span> -->
+        <input type="password" class="form-control" name="binance_api_secret" id="binance_api_secret"  placeholder="binance_api_secret" value="{{ session.auth.binance_api_secret }}" />
+
+
+
+        <br>
+        <label for="">Telegram Information</label><button class="pull-right  btn btn-success" type="button" onclick="testTelegram()"> Test </button>
+        <input type="text" class="form-control" name="bot_id" id="bot_id"   placeholder="telegram_bot_id" value="{{ session.auth.telegram_bot_id }}" />
+        <input type="text" class="form-control" name="bot_token" id="bot_token"   placeholder="telegram_bot_token" value="{{ session.auth.telegram_bot_token }}" />
+  
+        <br>
+        <label for="">Reset Password</label>
+        <input type="password" class="form-control" name="password" id="password"   placeholder="New Password" value="" />
+        <input type="password" class="form-control" name="re_password" id="rePassword"   placeholder="Re - New Password" value="" />
+  
+        <br>
+			  <!-- <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="signup" type="Submit">Sign up</button>  -->
+        <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="update" type="button" onclick="sub()">Save</button>  
+        <button class="btn btn-lg btn-white btn-block"  type="button"> <a href="/logout">Logout</a>  </button> 
+        <br>
+        <button class="btn btn-lg btn-danger btn-block" type="button"> <a href="/delete">Delete account</a>  </button> 
+    
+        
+     
+		</form>	
+     	
+   	
+	</div>
+
+
+</div>
+		
+  
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+<script>
+
+
+function sub(){
+  var rePass = $('#repass').val();
+  var pass = $('#pass').val();
+  var user = $('#user').val();
+  var email = $('#email').val();
+
+  if(rePass != '' && pass != '' ){
+      console.log('IF')
+    if(rePass !== pass){
+        Swal.fire({
+            title: 'Error!',
+            text: 'Password And Re-Password not match!',
+            icon: 'error',
+            confirmButtonText: 'Close'
+        })
+    }else{
+        $('#signup-form').submit();
+    }
+
+  }else{
+    $('#signup-form').submit();
+  }
+
+}
+
+
+
+function logout(){
+
+  $('#logout-form').submit();
+}
+
+
+
+function testBinance(){
+    var binance_api_key = $('#binance_api_key').val()
+    var binance_api_secret = $('#binance_api_secret').val()
+
+    if(binance_api_key != '' && binance_api_secret != ''){
+     
+      $.ajax({
+        type: "POST", 
+        url: "/test/binance", 
+        cache: false,
+        dataType: 'json',
+        data: {
+          binance_api_key: binance_api_key,
+          binance_api_secret: binance_api_secret,
+        },
+        success: function(res){
+				 Swal.fire(res.title, res.msg, res.status);      
+        }
+			});
+    }else{
+        Swal.fire({
+            title: 'Warning!',
+            text: 'Please type all input!',
+            icon: 'warning',
+            confirmButtonText: 'Close'
+        })
+    }
+  
+}
+
+
+function testTelegram(){
+    var telegram_bot_id = $('#bot_id').val()
+    var telegram_bot_token = $('#bot_token').val()
+    console.log("ok")
+    if(telegram_bot_id != '' && telegram_bot_token != ''){
+
+      $.ajax({
+        type: "POST", 
+        url: "/test/telegram", 
+        cache: false,
+        dataType: 'json',
+        data: {
+          telegram_bot_id: telegram_bot_id,
+          telegram_bot_token: telegram_bot_token,
+        },
+        success: function(res){
+				 Swal.fire(res.title, res.msg, res.status);      
+        }
+			});
+  
+    }else{
+      Swal.fire({
+            title: 'Warning!',
+            text: 'Please type all input!',
+            icon: 'warning',
+            confirmButtonText: 'Close'
+        })
+    }
+
+}
+
+
+</script>
+</html>

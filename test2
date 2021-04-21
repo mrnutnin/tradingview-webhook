@@ -1,0 +1,25 @@
+{ 
+    "usdt": 11,
+    "symbol": "XRP",
+    "username": "admin1",
+    "password": "123",
+    "passphrase": "abc123",
+    "time": "timenow",
+    "exchange": "XRPUSDT",
+    "bar":{
+        "time": "timenow",
+        "close": 1,
+        "volume": 1
+    },
+    "strategy": {
+        "position_size": 1,
+        "order_action": "buy",
+        "order_contracts": 2,
+        "order_price": 1.26,
+        "order_id": "buy",
+        "market_position": "long",
+        "market_position_size": 1,
+        "prev_market_position": "short",
+        "prev_market_position_size": 1
+    }
+}
