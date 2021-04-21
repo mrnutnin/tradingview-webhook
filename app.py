@@ -189,10 +189,20 @@ def webhookV1():
 
         # recent trade
         recent_trade = client.get_my_trades(symbol=exchange, limit=1)
-
+        price = float(data['strategy']['order_price'])
         # quantity for buy
-        quantity = round(usdt / float(data['strategy']['order_price']) , 2)
-
+        quantity = usdt / price
+        quantity = round( quantity , 6)
+        # telegram_bot_sendtext(
+        #     f"USDT : {usdt}", telegram_bot_token, telegram_bot_id)
+        # telegram_bot_sendtext(
+        #     f"PRICE : {price}", telegram_bot_token, telegram_bot_id)
+        # telegram_bot_sendtext(
+        #     f"quantity : {quantity}", telegram_bot_token, telegram_bot_id)
+        
+        print(usdt)
+        print(price)
+        print(quantity)
         # get asset balance with param
         asset_balance = client.get_asset_balance(symbol)
 
@@ -210,6 +220,11 @@ def webhookV1():
 
         # quantity for buy
         quantity = math.floor(quantity * 10 ** decimals) / 10 ** decimals
+
+       
+
+        telegram_bot_sendtext(
+            f"last quantity : {quantity}", telegram_bot_token, telegram_bot_id)
 
         # quantity forsell
         asset_balance_free = math.floor(
