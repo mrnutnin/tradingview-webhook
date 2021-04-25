@@ -1,0 +1,11 @@
+{   
+    "broker": "binance",
+    "amount": 10.1,
+    "order_action": "{{strategy.order.action}}",
+    "order_price": {{strategy.order.price}},
+    "exchange": "{{ticker}}",
+    "auth": {
+        "username": "mrnut",
+        "password": "1234"
+    }
+}
