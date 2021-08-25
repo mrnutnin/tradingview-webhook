@@ -92,10 +92,8 @@ def telegram_bot_sendtext(bot_message, bot_token, bot_id):
 @app.route('/webhookV1', methods=['POST'])
 def webhookV1():
 
-
     try:
-    
-    
+
         data = json.loads(request.data)
         # return data
         username = data['username']
@@ -176,7 +174,7 @@ def webhookV1():
         symbol = data['symbol']
 
         # amount buy/usdt
-        usdt = float (data['usdt'])
+        usdt = float(data['usdt'])
 
         # minimum buy in binance
         if usdt <= 10:
@@ -192,14 +190,14 @@ def webhookV1():
         price = float(data['strategy']['order_price'])
         # quantity for buy
         quantity = usdt / price
-        quantity = round( quantity , 6)
+        quantity = round(quantity, 6)
         # telegram_bot_sendtext(
         #     f"USDT : {usdt}", telegram_bot_token, telegram_bot_id)
         # telegram_bot_sendtext(
         #     f"PRICE : {price}", telegram_bot_token, telegram_bot_id)
         # telegram_bot_sendtext(
         #     f"quantity : {quantity}", telegram_bot_token, telegram_bot_id)
-        
+
         print(usdt)
         print(price)
         print(quantity)
@@ -213,15 +211,13 @@ def webhookV1():
 
         # stepSize decimal 1, 0.1, 0.01
         step_size = [float(_['stepSize']) for _ in info['filters']
-                    if _['filterType'] == 'LOT_SIZE'][0]
+                     if _['filterType'] == 'LOT_SIZE'][0]
         step_size = '%.8f' % step_size
         step_size = step_size.rstrip('0')
         decimals = len(step_size.split('.')[1])
 
         # quantity for buy
         quantity = math.floor(quantity * 10 ** decimals) / 10 ** decimals
-
-       
 
         telegram_bot_sendtext(
             f"last quantity : {quantity}", telegram_bot_token, telegram_bot_id)
@@ -235,7 +231,7 @@ def webhookV1():
 
             # request create order buy to binance
             order_response = orderV1(side, quantity, exchange,
-                                    telegram_bot_token, telegram_bot_id, binance_api_key, binance_api_secret)
+                                     telegram_bot_token, telegram_bot_id, binance_api_key, binance_api_secret)
             if order_response:
                 buy_quantity = 0
                 buy_price = 0
@@ -258,7 +254,7 @@ def webhookV1():
 
                 # request create order sell to binance
                 order_response = orderV1(side, asset_balance_free, exchange,
-                                        telegram_bot_token, telegram_bot_id, binance_api_key, binance_api_secret)
+                                         telegram_bot_token, telegram_bot_id, binance_api_key, binance_api_secret)
 
                 if order_response:
                     sell_quantity = 0
@@ -305,7 +301,7 @@ def webhookV1():
 
             else:
                 telegram_bot_sendtext(
-                    "ERROR : You not have coin! ", telegram_bot_token, telegram_bot_id)
+                    "ERROR : You not have " + str(symbol) + " coin! ", telegram_bot_token, telegram_bot_id)
                 return {
                     "code": "warning",
                     "message": "You not have coin!"
@@ -327,8 +323,8 @@ def webhookV1():
         else:
             print("order failed")
 
-            telegram_bot_sendtext("ERROR : order failed",
-                                telegram_bot_token, telegram_bot_id)
+            telegram_bot_sendtext("ERROR : order failed " + str(symbol) + "",
+                                  telegram_bot_token, telegram_bot_id)
             return {
                 "error": "error",
                 "message": "order failed"
